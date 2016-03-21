@@ -2,21 +2,19 @@ package ru.ncedu.gorbatovskiy.model;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
  * Created by Gorbatovskiy on 21.03.2016.
  */
+@Entity
 @Table(name = "STORE")
 public class Store implements Serializable {
 
     @Id
     @GeneratedValue(generator = "STORE_GENERATOR")
-    @GenericGenerator(name = "STORE_SEQ", strategy = "increment")
+    @GenericGenerator(name = "STORE_GENERATOR", strategy = "increment")
     @Column(name = "ID")
     private Integer id;
 

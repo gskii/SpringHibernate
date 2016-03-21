@@ -2,15 +2,13 @@ package ru.ncedu.gorbatovskiy.model;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
  * Created by Gorbatovskiy on 21.03.2016.
  */
+@Entity
 @Table(name = "CUSTOMER")
 public class Customer implements Serializable {
 

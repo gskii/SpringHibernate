@@ -18,9 +18,9 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
         <property name="password" value="HOME_TASK_PASS"/>
     </bean>
 
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
+          scope="singleton">
         <property name="dataSource" ref="dataSource"/>
-
         <property name="annotatedClasses">
             <list>
                 <value>ru.ncedu.gorbatovskiy.model.Book</value>
@@ -29,13 +29,24 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
                 <value>ru.ncedu.gorbatovskiy.model.Order</value>
             </list>
         </property>
-
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
                 <prop key="hibernate.current_session_context_class">thread</prop>
             </props>
         </property>
+    </bean>
+
+    <bean id="bookDAO" class="ru.ncedu.gorbatovskiy.dao.BookDAO" scope="singleton" autowire="byType"/>
+    <bean id="storeDAO" class="ru.ncedu.gorbatovskiy.dao.StoreDAO" scope="singleton" autowire="byType"/>
+    <bean id="orderDAO" class="ru.ncedu.gorbatovskiy.dao.OrderDAO" scope="singleton" autowire="byType"/>
+    <bean id="customerDAO" class="ru.ncedu.gorbatovskiy.dao.CustomerDAO" scope="singleton" autowire="byType"/>
+
+    <bean id="daoFactory" class="ru.ncedu.gorbatovskiy.dao.DaoFactory" scope="singleton">
+        <lookup-method name="getBookDAO" bean="bookDAO"/>
+        <lookup-method name="getOrderDAO" bean="orderDAO"/>
+        <lookup-method name="getStoreDAO" bean="storeDAO"/>
+        <lookup-method name="getCustomerDAO" bean="customerDAO"/>
     </bean>
 
 </beans>
