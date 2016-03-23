@@ -207,6 +207,5 @@ public class Main {
 
         // Задание 5:
         main.printGreatBuy();
-
     }
 }

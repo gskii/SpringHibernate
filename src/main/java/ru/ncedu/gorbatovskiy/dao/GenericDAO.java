@@ -73,6 +73,7 @@ public abstract class GenericDAO<T, PK extends Serializable> {
     }
 
     public void closeSession() {
+        System.out.println("GenericDAO.closeSession");
         if (sessionFactory != null) {
             Session session = sessionFactory.getCurrentSession();
             if (session != null && session.isOpen()) {

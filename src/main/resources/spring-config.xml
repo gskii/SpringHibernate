@@ -37,10 +37,14 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
         </property>
     </bean>
 
-    <bean id="bookDAO" class="ru.ncedu.gorbatovskiy.dao.BookDAO" scope="singleton" autowire="byType"/>
-    <bean id="storeDAO" class="ru.ncedu.gorbatovskiy.dao.StoreDAO" scope="singleton" autowire="byType"/>
-    <bean id="orderDAO" class="ru.ncedu.gorbatovskiy.dao.OrderDAO" scope="singleton" autowire="byType"/>
-    <bean id="customerDAO" class="ru.ncedu.gorbatovskiy.dao.CustomerDAO" scope="singleton" autowire="byType"/>
+    <bean id="bookDAO" class="ru.ncedu.gorbatovskiy.dao.BookDAO" scope="singleton" autowire="byType"
+          destroy-method="closeSession"/>
+    <bean id="storeDAO" class="ru.ncedu.gorbatovskiy.dao.StoreDAO" scope="singleton" autowire="byType"
+          destroy-method="closeSession"/>
+    <bean id="orderDAO" class="ru.ncedu.gorbatovskiy.dao.OrderDAO" scope="singleton" autowire="byType"
+          destroy-method="closeSession"/>
+    <bean id="customerDAO" class="ru.ncedu.gorbatovskiy.dao.CustomerDAO" scope="singleton" autowire="byType"
+          destroy-method="closeSession"/>
 
     <bean id="daoFactory" class="ru.ncedu.gorbatovskiy.dao.DaoFactory" scope="singleton">
         <lookup-method name="getBookDAO" bean="bookDAO"/>
