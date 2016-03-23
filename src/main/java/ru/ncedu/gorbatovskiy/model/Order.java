@@ -16,6 +16,13 @@ import java.util.Date;
 //                query = "SELECT DISTINCT MONTH(ORDER_DATE) FROM ORDERS"
                 query = "SELECT * FROM ORDERS GROUP BY MONTH(ORDER_DATE)",
                 resultClass = Order.class
+        ),
+        @NamedNativeQuery(
+                name = "Order.findGreatBuy",
+                query = "SELECT * FROM ORDERS O " +
+                        "JOIN CUSTOMER C ON C.ID = O.CUSTOMER_ID " +
+                        "WHERE O.PRICE >= 60000",
+                resultClass = Order.class
         )
 //        @NamedQuery(name = "Order.findOrderTitle",
 //                query = "SELECT C.NAME, S.NAME FROM ORDERS O " +
@@ -25,11 +32,9 @@ import java.util.Date;
 //                query = "SELECT O.ORDER_DATE, C.NAME, C.DISCOUNT * B.COST /100, B.NAME, O.COUNT FROM ORDERS O " +
 //                        "JOIN CUSTOMER C ON C.ID = O.CUSTOMER_ID " +
 //                        "JOIN BOOK B ON B.ID = O.BOOK_ID"),
-//        @NamedQuery(name = "Order.findGreatBuy",
-//                query = "SELECT O.ID, C.NAME, O.ORDER_DATE FROM ORDERS O " +
-//                        "JOIN CUSTOMER C ON C.ID = O.CUSTOMER_ID " +
-//                        "WHERE O.PRICE >= 60000")
+
 })
+
 public class Order {
 
     @Id

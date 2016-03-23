@@ -1,17 +1,10 @@
 package ru.ncedu.gorbatovskiy.dao;
 
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-
-import java.sql.*;
-
-import org.hibernate.*;
 import org.hibernate.criterion.*;
 
-
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -33,11 +26,12 @@ public abstract class GenericDAO<T, PK extends Serializable> {
         this.sessionFactory = sessionFactory;
     }
 
-    public void create(T entity) {
+    public PK create(T entity) {
         Session session = sessionFactory.getCurrentSession();
         session.beginTransaction();
-        session.save(entity);
+        PK result = (PK) session.save(entity);
         session.getTransaction().commit();
+        return result;
     }
 
     public T read(PK id) {

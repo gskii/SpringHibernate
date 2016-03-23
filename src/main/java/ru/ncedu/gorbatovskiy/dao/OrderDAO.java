@@ -18,6 +18,10 @@ public class OrderDAO extends GenericDAO<Order, Integer> {
         return findByNamedQuery("Order.findWithUniqueMonth");
     }
 
+    public List<Order> findGreatBuy() {
+        return findByNamedQuery("Order.findGreatBuy");
+    }
+
     public static void main(String[] args) {
         System.out.println(((DaoFactory) ApplicationService.getApplicationContext().getBean("daoFactory")).getOrderDAO().findWithUniqueMonth().size());
     }
