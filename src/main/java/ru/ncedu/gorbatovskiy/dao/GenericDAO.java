@@ -1,7 +1,14 @@
 package ru.ncedu.gorbatovskiy.dao;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+
+import java.sql.*;
+
+import org.hibernate.*;
+import org.hibernate.criterion.*;
+
 
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -18,6 +25,14 @@ public abstract class GenericDAO<T, PK extends Serializable> {
         this.type = type;
     }
 
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
+
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
     public void create(T entity) {
         Session session = sessionFactory.getCurrentSession();
         session.beginTransaction();
@@ -26,12 +41,9 @@ public abstract class GenericDAO<T, PK extends Serializable> {
     }
 
     public T read(PK id) {
-        T resultEntity = null;
         Session session = sessionFactory.getCurrentSession();
         session.beginTransaction();
-        resultEntity = (T) sessionFactory.getCurrentSession().get(type, id);
-        session.getTransaction().commit();
-        return resultEntity;
+        return (T) sessionFactory.getCurrentSession().get(type, id);
     }
 
     public void update(T entity) {
@@ -48,48 +60,30 @@ public abstract class GenericDAO<T, PK extends Serializable> {
         session.getTransaction().commit();
     }
 
-    protected Integer getCount(String tableName) {
-        String sqlStatement = "SELECT COUNT(*) FROM " + tableName + ";";
-        List resultSetList = null;
-        Integer countValue = null;
-        resultSetList = executeQuery(sqlStatement);
-        if (resultSetList != null && !resultSetList.isEmpty()) {
-            Object resultObject = resultSetList.get(0);
+    public Long getCount() {
+        Session session = sessionFactory.getCurrentSession();
+        session.beginTransaction();
+        return (Long) session.createCriteria(type).setProjection(Projections.rowCount()).uniqueResult();
+    }
 
-            // Результаты целочисленных запросов Hibernate приводит к BigInteger
+    public List<T> findByNamedQuery(String namedQuery) {
+        Session session = sessionFactory.getCurrentSession();
+        session.beginTransaction();
+        return (List<T>) session.getNamedQuery(namedQuery).list();
+    }
 
-            if (resultObject instanceof BigInteger) {
-                countValue = ((BigInteger) resultObject).intValue();
+    public List<T> findAll() {
+        Session session = sessionFactory.getCurrentSession();
+        session.beginTransaction();
+        return session.createCriteria(type).list();
+    }
+
+    public void closeSession() {
+        if (sessionFactory != null) {
+            Session session = sessionFactory.getCurrentSession();
+            if (session != null && session.isOpen()) {
+                session.close();
             }
         }
-        return countValue;
-    }
-
-    public List<T> findByQuery(String query) {
-        List<T> resultList = null;
-        Session session = sessionFactory.getCurrentSession();
-        session.beginTransaction();
-        resultList = (List<T>) session.createSQLQuery(query)
-                .addEntity(type)
-                .list();
-        session.getTransaction().commit();
-        return resultList;
-    }
-
-    public List executeQuery(String query) {
-        List resultList = null;
-        Session session = sessionFactory.getCurrentSession();
-        session.beginTransaction();
-        resultList = session.createSQLQuery(query).list();
-        session.getTransaction().commit();
-        return resultList;
-    }
-
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
-
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
     }
 }

@@ -48,5 +48,4 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
         <lookup-method name="getStoreDAO" bean="storeDAO"/>
         <lookup-method name="getCustomerDAO" bean="customerDAO"/>
     </bean>
-
 </beans>

@@ -1,8 +1,11 @@
 package ru.ncedu.gorbatovskiy.model;
 
-import org.hibernate.annotations.GenericGenerator;
-
+import org.hibernate.annotations.*;
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
@@ -10,6 +13,23 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "BOOK")
+@NamedNativeQueries({
+        @NamedNativeQuery(
+                name = "Book.findUniqueBooks",
+                query = "SELECT DISTINCT * FROM BOOK GROUP BY NAME, COST",
+//                query = "SELECT DISTINCT NAME, COUNT FROM BOOK",
+                resultClass = Book.class
+        ),
+        @NamedNativeQuery(
+                name = "Book.findWindowsOrExpensiveBooks",
+                query = "SELECT * FROM BOOK " +
+                        "WHERE LOWER(NAME) LIKE '%windows%' " +
+                        "OR COST > 2000 " +
+                        "ORDER BY NAME, COST DESC",
+                resultClass = Book.class
+        )
+})
+
 public class Book implements Serializable {
 
     @Id

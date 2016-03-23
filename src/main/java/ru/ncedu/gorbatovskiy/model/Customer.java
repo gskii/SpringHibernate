@@ -10,6 +10,20 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "CUSTOMER")
+@NamedNativeQueries({
+        @NamedNativeQuery(
+                name = "Customer.findWithUniqueAddresses",
+                query = "SELECT * FROM CUSTOMER GROUP BY ADDRESS",
+                resultClass = Customer.class
+        ),
+        @NamedNativeQuery(
+                name = "Customer.findSpecifyCustomer",
+                query = "SELECT * FROM CUSTOMER " +
+                        "WHERE ADDRESS LIKE '%Нижегородский район%'",
+                resultClass = Customer.class
+        )
+
+})
 public class Customer implements Serializable {
 
     @Id

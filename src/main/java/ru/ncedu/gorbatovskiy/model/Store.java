@@ -10,6 +10,19 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "STORE")
+@NamedNativeQueries({
+        @NamedNativeQuery(
+                name = "Store.findCustomStore",
+                query = "SELECT * FROM STORE " +
+                        "WHERE ADDRESS LIKE '%Сормовский район%' " +
+                        "AND ADDRESS LIKE '%Советский район%'",
+//                query = "SELECT NAME FROM STORE " +
+//                        "WHERE ADDRESS LIKE '%Сормовский район%' " +
+//                        "AND ADDRESS LIKE '%Советский район%'",
+                resultClass = Store.class
+        )
+
+})
 public class Store implements Serializable {
 
     @Id
